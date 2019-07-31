@@ -17,6 +17,11 @@ WORKDIR /tmp/gradle-build-scan-quickstart
 RUN gradle --version
 RUN gradle build -x test --info
 
+WORKDIR /tmp
+RUN git clone https://github.com/Netflix/conductor.git
+WORKDIR /tmp/conductor
+RUN git checkout tags/v2.14.1
+RUN gradle build --info --no-daemon
 
 # WORKDIR /tmp
 # RUN git clone https://github.com/spring-projects/spring-framework.git

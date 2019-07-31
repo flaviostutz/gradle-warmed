@@ -4,5 +4,5 @@ services:
 
   gradle-warmed:
     build: .
-    image: flaviostutz/gradle-warmed
+    image: flaviostutz/gradle-warmed:3.2.1
 
