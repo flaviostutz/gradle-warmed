@@ -13,13 +13,13 @@ RUN gradle -v
 WORKDIR /tmp
 RUN git clone https://github.com/gradle/gradle-build-scan-quickstart.git
 WORKDIR /tmp/gradle-build-scan-quickstart
-RUN gradle build -x test --info --build-cache
+RUN gradle build -x test --info
 
 WORKDIR /tmp
 RUN git clone https://github.com/Netflix/conductor.git
 WORKDIR /tmp/conductor
 RUN git checkout tags/v2.14.1
-RUN gradle build --info --no-daemon -x test --build-cache
+RUN gradle build --info --no-daemon -x test
 
 WORKDIR /
 RUN rm -rf /tmp/*
