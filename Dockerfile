@@ -19,7 +19,8 @@ WORKDIR /tmp
 RUN git clone https://github.com/Netflix/conductor.git
 WORKDIR /tmp/conductor
 RUN git checkout tags/v2.14.1
-RUN gradle build --info --no-daemon -x test
+RUN ./gradlew -x test --build-cache --no-daemon
+# RUN gradle build --info --no-daemon -x test
 
 WORKDIR /
 RUN rm -rf /tmp/*
