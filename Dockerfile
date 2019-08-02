@@ -1,21 +1,25 @@
 FROM openjdk:8-jdk-stretch AS BUILD
-RUN apt-get update && apt-get install -y gradle git
 
-RUN gradle --version
+WORKDIR /tmp
+RUN wget https://services.gradle.org/distributions/gradle-5.5.1-bin.zip -P /tmp
+RUN unzip -d /opt/gradle /tmp/gradle-*.zip
+ENV GRADLE_HOME=/opt/gradle/gradle-5.5.1
+RUN ln -s $GRADLE_HOME/bin/gradle /usr/bin/gradle
+
+RUN gradle -v
 
 #compile some example projects to warm up gradle and maven cache
 
 WORKDIR /tmp
 RUN git clone https://github.com/gradle/gradle-build-scan-quickstart.git
 WORKDIR /tmp/gradle-build-scan-quickstart
-RUN gradle --version
-RUN gradle build -x test --info
+RUN gradle build -x test --info --build-cache
 
 WORKDIR /tmp
 RUN git clone https://github.com/Netflix/conductor.git
 WORKDIR /tmp/conductor
 RUN git checkout tags/v2.14.1
-RUN gradle build --info --no-daemon -x test
+RUN gradle build --info --no-daemon -x test --build-cache
 
 WORKDIR /
 RUN rm -rf /tmp/*
