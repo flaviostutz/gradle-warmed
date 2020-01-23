@@ -1,11 +1,10 @@
 FROM openjdk:8-jdk-stretch AS BUILD
 
 WORKDIR /tmp
-RUN wget https://services.gradle.org/distributions/gradle-5.5.1-bin.zip -P /tmp
+RUN wget https://services.gradle.org/distributions/gradle-4.10.3-bin.zip -P /tmp
 RUN unzip -d /opt/gradle /tmp/gradle-*.zip
-ENV GRADLE_HOME=/opt/gradle/gradle-5.5.1
+ENV GRADLE_HOME=/opt/gradle/gradle-4.10.3
 RUN ln -s $GRADLE_HOME/bin/gradle /usr/bin/gradle
-
 RUN gradle -v
 
 #compile some example projects to warm up gradle and maven cache
@@ -16,11 +15,11 @@ WORKDIR /tmp/gradle-build-scan-quickstart
 RUN gradle build -x test --info
 
 WORKDIR /tmp
-RUN git clone https://github.com/Netflix/conductor.git
+RUN git clone https://github.com/netflix/conductor.git
 WORKDIR /tmp/conductor
-RUN git checkout tags/v2.14.1
-RUN ./gradlew -x test --build-cache --no-daemon
-# RUN gradle build --info --no-daemon -x test
+RUN git checkout tags/v2.24.2
+# RUN ./gradlew -x test --build-cache --no-daemon
+RUN gradle build --info --no-daemon -x test
 
 WORKDIR /
 RUN rm -rf /tmp/*
